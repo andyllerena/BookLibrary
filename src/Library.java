@@ -1,23 +1,34 @@
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-    public class Library {
-        public void readTextFile(String filePath) {
-            try {
-                FileReader fileReader = new FileReader(filePath);
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
+public class Library {
+    private List<String> books;
 
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    System.out.println(line);
-                }
+    public Library() {
+        books = new ArrayList<>();
+    }
 
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+    public void loadBooksFromFile(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                books.add(line);
             }
+        } catch (IOException e) {
+            System.err.println("Error loading books from file: " + e.getMessage());
         }
     }
 
+    public void displayBooks() {
+        if (books.isEmpty()) {
+            System.out.println("No books available.");
+        } else {
+            for (String book : books) {
+                System.out.println(book);
+            }
+        }
+    }
+}
